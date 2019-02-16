@@ -37,17 +37,11 @@ if file_exists==True:
     #check to see that data is valid
     if result.is_valid():
 	
-	# output data
-        #print("Last valid input: " + str(datetime.datetime.now()))
-        #print("Temperature: %d C" % result.temperature)
-	#print("Temperature: %d F" % (((result.temperature)*9/5)+32))
-        #print("Humidity: %d %%" % result.humidity)
-
 	#---if log file alread exists it will append with sensor data
 	log_file = open(file_name, "a")
 	log_file.write('\n' +str(date_time) 
 		 	+'\nTemperature: %d F '% (((result.temperature)*9/5)+32)  
-			+'Humidity: %d %%' % result.humidity) 
+			+'Humidity: %d %%' % result.humidity +'\n') 
 	log_file.close()
 
 else:
@@ -55,5 +49,14 @@ else:
     #---if log file does not exist, creates new log file
     #---and adds title line so file is not empty
     log_file = open("temp_log.txt", "w")
-    log_file.write("Temperature log file\n")
+
+    # read data using pin 17
+    instance = dht11.DHT11(pin=17)
+
+    # set data to variable
+    result = instance.read()
+    log_file.write('Temperature Log file\n\n' 
+			+str(date_time) 
+		 	+'\nTemperature: %d F '% (((result.temperature)*9/5)+32)  
+			+'Humidity: %d %%' % result.humidity +'\n') 
     log_file.close()
