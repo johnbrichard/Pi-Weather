@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href='/static/style.css' />
+    <title>John's Data</title>
+</head>
+<body>
+	<div class="main">
+	<div class="title">
+		<h1>Johns Data</h1>
+	</div>
+	<div class="content1">
+	<h2>Today's Date is:</h2>
+  	<p>{{ date | safe }}</p>
+	<p>{{ time | safe }}</p>
+	</div>
+	<div class="content2">
+	<h2>Temperature</h2>
+  	<p>{{ temperature | safe }}</p>
+	</div>
+	<div class="content3">
+  	<h2>Humidity</h2>
+  	<p>
+    	{{ humidity | safe }}
+    	</p>
+	</div>
+	</div>
+</body>
+</html>
