@@ -4,30 +4,6 @@ You should be able to launch the application using the weather.py file.
 This will launch the file on your local network using address 0.0.0.0 on port 5000
 To view the app and ensure it's working, execute the weather.py file and then open up your browser and type in http://0.0.0.0:5000
 
-If the data is not populating (the curly brackets have text rather than values), then the likely problem
-is that the pointer to the template file needs to be reconfigured. 
-
-By default, when we access our application from a web interface, it will connect to our external HTTP port (port 80)
-and will display the index.html file at the topmost folder of the application file.
-Flask apps use a nested file structure and as such the template we will be calling will be within the templates folder
-and not the topmost folder.
-
-To circumvent this, we will create what is called a "soft link". 
-This soft link file will be located in our app folder and will redirect to the index.html file within templates.
-Open up your terminal and navigate to the templates folder. 
-
-From here we'll type 
-ln -s /path/to/source/folder /path/to/destination/folder
-
-This is going to create a soft link (ln -s) of the file at /path/to/source/file and place it into /path/to/destination/file
-
-For example:
-ln -s /home/pi/Flask_Weather_App/templates/index.html /home/pi/Flask_Weather_App
-
-Once the soft link is created you should be able to launch your app and see the data populate.
-
-Relaunch your weather.py file to ensure the data is populating.
-
 In order to get access this page from outside of your local network, you'll have to configure your network 
 and forward external port 80 (your HTTP port) to internal port 5000 (your local Flask development server). 
 This will direct all external traffic accessing your IP address to the port hosting your Flask server.
