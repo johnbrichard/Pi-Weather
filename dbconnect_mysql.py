@@ -1,11 +1,11 @@
-import MySQLdb
+import mysqldba
 import sys
 
 print("Content-type:text/html\n\n")
 
 try:
 
-    conn = MySQLdb.connect(
+    conn = mysqldba.connect(
 
         host="jamesbramancom.ipagemysql.com",
 

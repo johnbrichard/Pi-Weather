@@ -1,23 +1,29 @@
 import pymysql.cursors
 
-db = pymysql.connect("jamesbraman.com.ipagemysql.com", "weatherpi","123!weatherR", "weather")
-
-cursor = db.cursor()
-cursor.execute("SELECT VERSION()")
-# Fetch a single row using fetchone() method.
-data = cursor.fetchone()
-print("Database version : %s " % data)
-
-# disconnect from server
-db.close()
-
-# set sql variable to sql query
-sql = "INSERT INTO MAIN(PINUMBER, LOCATION, TEMPTIME, TEMP, HUMTIME, HUMIDITY) VALUES (1,US,1300,32,1300,0)"
+connection = pymysql.connect(host='jamesbramancom.ipagemysql.com',
+                             user='weatherpi',
+                             password='123!weatherR',
+                             db='weather',
+                             charset='utf8mb4',
+                             cursorclass=pymysql.cursors.DictCursor)
 
 try:
-    cursor.execute(sql)
-    db.commit()
-except:
-    db.rollback()
+    with connection.cursor() as cursor:
+        # Create a new record
+        # set sql variable to sql query
+        sql = "INSERT INTO `main`(`pinnumber`, `location`, `temptime`, `temp`, `humtime`, `humidity`) VALUES (1,US,1300,32,1300,0)"
+        #sql = "INSERT INTO `users` (`email`, `password`) VALUES (%s, %s)"
+        cursor.execute(sql)
 
-db.close()
+    # connection is not autocommit by default. So you must commit to save
+    # your changes.
+    connection.commit()
+
+    with connection.cursor() as cursor:
+        # Read a single record
+        sql1 = "SELECT `temp`, `humidity` FROM `main` WHERE `temptime`=1300"
+        cursor.execute(sql1)
+        result = cursor.fetchone()
+        print(result)
+finally:
+    connection.close()
