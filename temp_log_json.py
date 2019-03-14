@@ -1,4 +1,4 @@
-#	This script will check for a log file for sensor data. 
+#	This script will check for a data_file.json for sensor data.
 #	If log file exists, it will append with new sensor data 
 #	(to include date and time as given by the OS.) 
 #	If log file does not exist, it will create a new file 
@@ -8,7 +8,6 @@ import RPi.GPIO as GPIO
 import os
 import datetime
 import dht11
-import time
 import json
 
 #initialize GPIO
@@ -20,7 +19,7 @@ GPIO.cleanup()
 date_time = datetime.datetime.now()
 
 #---depending on if the file exists within the specified path
-file_exists = os.path.isfile(file_name)
+file_exists = os.path.isfile('data_file.json')
 
 # read data using pin 14
 instance = dht11.DHT11(pin=17)
