@@ -12,9 +12,8 @@ Vincenti, G. Braman, J. & Trajkovski, G. (2007). Emotion-Based Framework for Mul
 # Process:
 Step 1 - Complete initial set up Raspberry Pi.<br/>
 Step 2 - Install weather sensor and ensure data integrity.<br/>
-Step 3 - Write Python script to output data to text file.<br/>
-Step 4 - Implement cronjob to schedule daily automation and output of weather data.<br/>
-Step 5 - Upload data to web server.<br/>
-Step 6 - Set up web page to display data.<br/>
-Step 7 - Develop affective computing/fuzzy logic to dynamically change webpage depending on data.<br/>
-Step 8 - Incorporate affective computing/fuzzy logic into system.<br/>
+Step 3 - Write Python script to add data to Google Sheets file.<br/>
+Step 4 - Implement crontab to schedule data automation.<br/>
+Step 5 - Set up Flask web application to pull and display Sheets data.<br/>
+Step 6 - Develop neural network to implement affective computing/fuzzy logic to webpage.<br/>
+Step 7 - Incorporate affective computing/fuzzy logic into system.<br/>
