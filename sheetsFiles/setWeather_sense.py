@@ -4,38 +4,27 @@ import os.path
 from googleapiclient.discovery import build
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
-import RPi.GPIO as GPIO
+from sense_hat import SenseHat
 import time
-import dht11
 
 # If modifying these scopes, delete the file token.pickle.
 SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
 
 # The ID and range of a sample spreadsheet.
 SPREADSHEET_ID = '1-m7jTqyiXbUfFnEb9MoXcNahHEokHokM-HK3ziLStuk'
-RANGE_NAME = 'Weather Data!A2:C'
-time = time=time.asctime(time.localtime(time.time()))
+# Replace John with your name and ensure data range is accurate
+RANGE_NAME = 'John\'s Data!E3:H'
+
+sense = SenseHat()
+sense.clear()
 
 def main():
 
-    #	This script will check for a log file for sensor data. 
-    #	If log file exists, it will append with new sensor data 
-    #	(to include date and time as given by the OS.) 
-    #	If log file does not exist, it will create a new file 
-    #	and add a title.
-
-    #initialize GPIO
-    GPIO.setwarnings(False)
-    GPIO.setmode(GPIO.BCM)
-    GPIO.cleanup()
-
-    # read data using pin 17
-    instance = dht11.DHT11(pin=17)
-
-    # set data to variable
-    weather = instance.read()
-    temperature=(((weather.temperature)*9/5)+32)
-    humidity=weather.humidity
+    #sets time variable
+    local_time = time.asctime(time.localtime(time.time()))
+    temperature = '%2d'% (((sense.get_temperature())*9/5)+32)
+    humidity = '%2d'% sense.get_humidity()
+    pressure = '%2d'% sense.get_pressure()
     """Shows basic usage of the Sheets API.
     Prints values from a sample spreadsheet.
     """
@@ -72,11 +61,25 @@ def main():
             rowcount+=1
 
     #sets values to be sent to spreadsheet from sensor to list variable named values
-    values = [
+    if temperature==32 and humidity==0:
+        temperature = 'Sensor error'
+        humidity = 'Sensor error'
+        pressure = 'Sensor error'
+        values = [
+            [
+                local_time,
+                temperature,
+                humidity,
+                pressure
+                ]
+            ]
+    else:
+        values = [
         [
-            time,
+            local_time,
             temperature,
-            humidity
+            humidity,
+            pressure
             ]
         ]
     #seralizes list variable values to json variable named mbody
@@ -85,9 +88,9 @@ def main():
             }        
 
     #sets the row to be written to the next empty row
-    r='A'+str(rowcount)+':C'+str(rowcount)
+    r='E'+str(rowcount)+':H'+str(rowcount)
     #sets the range of cells to be written
-    rangeName='Weather Data!'+r
+    rangeName='John\'s Data!'+r
     #writes the data from mbody to the spreadsheet
     result=service.spreadsheets().values().append(spreadsheetId=SPREADSHEET_ID, range=rangeName,valueInputOption='RAW',body=mbody).execute()
        

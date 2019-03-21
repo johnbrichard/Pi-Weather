@@ -1,16 +1,11 @@
 from flask import Flask, render_template
-import RPi.GPIO as GPIO
-from datetime import date
 import time
-import dht11
+import Adafruit_DHT
 
-#sets our GPIO pins to read data fed into them
-GPIO.setwarnings(False)
-GPIO.setmode(GPIO.BCM)
-GPIO.cleanup()
-
-#initiates instance variable which points to our DHT11 sensor
-instance = dht11.DHT11(pin=17)
+#---set sensor to variable named sensor
+sensor=Adafruit_DHT.DHT11
+#---set gpio variable to pin 17
+gpio=17
 
 #initiates app object for our application
 app = Flask(__name__)
@@ -19,10 +14,14 @@ app = Flask(__name__)
 @app.route('/')
 
 def index():
-    #reads data from DHT11
-    result = instance.read()
+    #---set date_time variable to date and time of OS
+    local_time = time.asctime(time.localtime(time.time()))
+    #---read data from sensor and assign to humidity and temperature variables
+    hum, temp = Adafruit_DHT.read_retry(sensor, gpio)
+    #---converts temperature to fahrenheit
+    temp=((temp*9/5)+32)
     #returns the sensor data and populates it into the index.html file
-    return render_template('index.html', time=time.asctime( time.localtime(time.time()) ), date= date.today() ,temperature=(((result.temperature)*9/5)+32), humidity=result.humidity)
+    return render_template('index.html', time=local_time, temperature=temp, humidity=hum)
 
 if __name__ == '__main__':
         #launches the Flask application and makes it available to everyone

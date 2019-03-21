@@ -3,34 +3,32 @@
 #	(to include date and time as given by the OS.) 
 #	If log file does not exist, it will create a new file 
 #	and add a title.
-
-import RPi.GPIO as GPIO
 import os
-import datetime
-import dht11
+import time
+import Adafruit_DHT
 import json
 
-#initialize GPIO
-GPIO.setwarnings(False)
-GPIO.setmode(GPIO.BCM)
-GPIO.cleanup()
-
+#---set sensor to variable named sensor
+sensor=Adafruit_DHT.DHT11
+#---set gpio variable to pin 17
+gpio=17
 #---set date_time variable to date and time of OS
-date_time = datetime.datetime.now()
+local_time = time.asctime(time.localtime(time.time()))
 
-#---depending on if the file exists within the specified path
+#---read data from sensor and assign to humidity and temperature variables
+humidity, temperature = Adafruit_DHT.read_retry(sensor, gpio)
+#---converts temperature to fahrenheit
+temperature=((temperature*9/5)+32)
+
+#---sets file_exists to path of json file
 file_exists = os.path.isfile('data_file.json')
 
-# read data using pin 14
-instance = dht11.DHT11(pin=17)
-
 # set data to variable
-result = instance.read()
 data = {
         "weather": {
-            "time": date_time,
-            "temperature": (((result.temperature)*9/5)+32),
-            "humidity": result.humidity
+            "time": local_time,
+            "temperature": temperature,
+            "humidity": humidity
                     }
         }
 
@@ -42,6 +40,6 @@ if file_exists==True:
         json.dump(data, write_file, default=str)
 
 else:
-    
+    #---if log file doesn't exist it will be created and sensor data added
     with open("data_file.json", "w") as write_file:
         json.dump(data, write_file, default=str)
