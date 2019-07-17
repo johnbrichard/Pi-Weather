@@ -1,4 +1,4 @@
-import mysqldba
+import mysqldb
 import sys
 
 print("Content-type:text/html\n\n")

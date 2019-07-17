@@ -25,7 +25,7 @@ try:
     humidity, temperature = Adafruit_DHT.read_retry(sensor,gpio)
     temperature=((temperature*9/5)+32)
 
-    insert = "INSERT INTO `test` (`date`, `temp`, `hum`) VALUES (%s, %s, %s)"
+    insert = "INSERT INTO `weather` (`date`, `temperature`, `humidity`) VALUES (%s, %s, %s)"
 
     cursor.execute(insert,(local_time, temperature, humidity))
     db.commit()
