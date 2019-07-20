@@ -31,7 +31,7 @@ try:
     db.commit()
     print("Record inserted successfully")
 
-except MySQLdb.Error as e:
+except pymysql.Error as e:
 
     print("Error %d: %s" % (e.args[0], e.args[1]))
 
