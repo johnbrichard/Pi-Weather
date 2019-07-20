@@ -1,17 +1,17 @@
 import openpyxl
-import MySQLdb
+import pymysql
 import sys
 
 try:
-    book = openpyxl.load_workbook("/home/pi/Documents/Weather.xlsx")
+    book = openpyxl.load_workbook("/home/pi/Downloads/Weather.xlsx")
     
     sheet = book.active
     
-    database = MySQLdb.connect(host= "127.0.0.1", user= "user", passwd= "Pa$$word12345", db= "csit216")
+    database = pymysql.connect(host= "127.0.0.1", user= "pi", passwd= "Pa$$word12345", db= "csit216")
     
     cursor = database.cursor()
 
-except MySQLdb.Error as e:
+except pymysql.Error as e:
 
     print("Error %d: %s" % (e.args[0], e.args[1]))
 

@@ -1,4 +1,4 @@
-import MySQLdb
+import pymysql
 import sys
 import time
 import Adafruit_DHT
@@ -8,11 +8,11 @@ try:
 
     gpio=17
 
-    db = MySQLdb.connect(
+    db = pymysql.connect(
 
-      host= "96.244.106.43",
+      host= "192.168.1.9",
 
-      user= "user",
+      user= "pi",
 
       passwd= "Pa$$word12345",
 
