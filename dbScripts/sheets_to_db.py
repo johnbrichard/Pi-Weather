@@ -7,7 +7,7 @@ try:
     
     sheet = book.active
     
-    database = pymysql.connect(host= "127.0.0.1", user= "pi", passwd= "Pa$$word12345", db= "csit216")
+    database = pymysql.connect(host= "192.168.1.9", user= "pi", passwd= "Pa$$word12345", db= "csit216")
     
     cursor = database.cursor()
 
@@ -36,4 +36,4 @@ database.commit()
 
 database.close()
 
-print(count +" records added")
+print(count, " records added")

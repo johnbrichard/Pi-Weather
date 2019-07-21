@@ -1,5 +1,3 @@
-from typing import List
-
 import numpy
 # for sigmoid function
 import scipy.special
@@ -91,7 +89,21 @@ learning_rate = 0.3
 # instantiate NeuralNetwork object
 n = NeuralNetwork(input_nodes, hidden_nodes, output_nodes, learning_rate)
 
+# initialize test variables
 testList = [1.0, 0.5, -1.5]
+testTarget = [0.0, 0.5, 1.0]
+
+# set up training loop
+for x in range(10000):
+    # load testList with random values within target range
+    for i in len(testList):
+        testList[i]=numpy.random.randint(low=0 high=100)
+        
+        # establish target values according to testList value
+        # testTarget[i]=
+
+        # train testList with testTarget goals
+        n.train(testList,testTarget)
 
 # test query (doesn't mean anything useful yet)
 print(n.query([75, 34, 10]))
