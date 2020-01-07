@@ -1,33 +1,32 @@
 import pymysql
 import sys
-import time
-import Adafruit_DHT
+import datetime
+from sense_hat import SenseHat
 
 try:
-    sensor=Adafruit_DHT.DHT11
-
-    gpio=17
+    sense = SenseHat()
+    sense.clear()
 
     db = pymysql.connect(
 
-      host= "192.168.1.9",
+      host= '192.168.1.15',
 
-      user= "pi",
+      user= 'pi',
 
-      passwd= "Pa$$word12345",
+      passwd= '!QAZ@WSX1qaz2wsx',
 
-      db= "csit216")
+      db= 'weatherDB')
 
     cursor=db.cursor()
     print("connected to the database")
 
-    local_time = time.asctime(time.localtime(time.time()))
-    humidity, temperature = Adafruit_DHT.read_retry(sensor,gpio)
-    temperature=((temperature*9/5)+32)
+    time = datetime.datetime.now()
+    humidity='%2d'% sense.get_humidity()
+    temperature='%2d'% (((sense.get_temperature())*9/5)+32)
 
-    insert = "INSERT INTO `weather` (`date`, `temperature`, `humidity`) VALUES (%s, %s, %s)"
+    insert = "INSERT INTO `Weather` (`DateTime`, `Temperature`, `Humidity`) VALUES (%s, %s, %s)"
 
-    cursor.execute(insert,(local_time, temperature, humidity))
+    cursor.execute(insert,(time, temperature, humidity))
     db.commit()
     print("Record inserted successfully")
 
